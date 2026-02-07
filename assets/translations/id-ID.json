@@ -1,0 +1,19 @@
+{
+  "app_name": "D2YCredi",
+  "debt": {
+    "title": "Daftar Utang",
+    "empty_title": "Tidak ada data",
+    "empty_message": "Belum ada daftar utang",
+    "due_date": "Jatuh Tempo",
+    "paid": "LUNAS",
+    "unpaid": "BELUM",
+    "delete": "Hapus",
+    "delete_confirm": "Apakah Anda yakin ingin menghapus utang dari {name}?"
+  },
+  "common": {
+    "cancel": "Batal",
+    "confirm": "Konfirmasi",
+    "see_all": "Lihat Semua",
+    "latest_transaction": "TRANSAKSI TERBARU"
+  }
+}

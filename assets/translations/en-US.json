@@ -1,0 +1,19 @@
+{
+  "app_name": "D2YCredi",
+  "debt": {
+    "title": "Debt List",
+    "empty_title": "No Data",
+    "empty_message": "No debts available",
+    "due_date": "Due Date",
+    "paid": "PAID",
+    "unpaid": "UNPAID",
+    "delete": "Delete",
+    "delete_confirm": "Are you sure you want to delete debt from {name}?"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "see_all": "See All",
+    "latest_transaction": "LATEST TRANSACTIONS"
+  }
+}

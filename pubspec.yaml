@@ -1,0 +1,165 @@
+name: d2ycredi
+description: CREDIT AND DEBIT APP BY D2Y
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI & Icons
+  cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
+  flutter_svg: ^2.1.0
+  iconsax_flutter: ^1.0.0
+  ionicons: ^0.2.2
+  lottie: ^3.3.2
+
+  # Navigation
+  go_router: ^17.1.0
+
+  # # State Management
+  flutter_bloc: ^9.1.1
+  equatable: ^2.0.7
+  rxdart: ^0.28.0
+
+  # # Dependency Injection
+  get_it: ^8.0.3
+
+  # # Serialization
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.9.0
+
+  # # Functional Programming
+  dartz: ^0.10.1
+
+  # # Storage
+  flutter_secure_storage: ^9.2.4
+  sqflite: ^2.4.2
+  path: ^1.9.1
+  path_provider: ^2.1.5
+
+  # # Network
+  # dio: ^5.8.0+1
+  internet_connection_checker: ^3.0.1
+  chucker_flutter: ^1.8.5
+
+  # # Images
+  cached_network_image: ^3.4.1
+  # flutter_cache_manager: ^3.4.1
+  image_picker: ^1.1.2
+  image_cropper: ^9.1.0
+  flutter_image_compress: ^2.4.0
+  photo_view: ^0.15.0
+
+  # # UI Components
+  carousel_slider: ^5.0.0
+  shimmer: ^3.0.0
+  fluttertoast: ^9.0.0
+  modal_bottom_sheet: ^3.0.0
+  # advanced_salomon_bottom_bar: ^3.3.4
+  # flutter_staggered_grid_view: ^0.7.0
+  smooth_page_indicator: ^1.2.1
+  flutter_slidable: ^4.0.1
+  # dismissible_page: ^1.0.2
+  # flutter_speed_dial: ^7.0.0
+  # keyboard_dismisser: ^3.0.0
+  # marquee: ^2.3.0
+
+  # # Localization
+  easy_localization: ^3.0.7+1
+  # intl: ^0.20.2
+
+  # # Environment
+  flutter_dotenv: ^5.2.1
+
+  # # Forms & Validation
+  formz: ^0.7.0
+
+  # # Audio & Video
+  # audio_service: ^0.18.18
+  # audio_video_progress_bar: ^2.0.3
+  # just_audio: ^0.10.4
+  # just_audio_background: ^0.0.1-beta.17
+  # audio_waveforms: ^1.3.0
+  # waveform_flutter: ^1.2.0
+  # audio_session: ^0.1.19
+  # video_player: ^2.10.1
+  # better_player_plus: ^1.1.5
+
+  # # Permissions
+  permission_handler: ^12.0.0+1
+
+  # # Device Info
+  # device_info_plus: ^11.5.0
+
+  # # Firebase
+  # firebase_core: ^3.14.0
+  # firebase_messaging: ^15.2.9
+  # firebase_analytics: ^11.6.0
+  # firebase_crashlytics: ^4.3.10
+  # firebase_remote_config: ^5.5.0
+
+  # # Auth
+  # google_sign_in: ^6.3.0
+
+  # # Utilities
+  intl: ^0.20.2
+  uuid: ^4.5.2
+  share_plus: ^11.0.0
+  url_launcher: ^6.3.1
+  # webview_flutter: ^4.13.0
+  # app_links: ^6.4.0
+  flutter_local_notifications: ^19.3.0
+  timezone: ^0.10.1
+  # collection: ^1.19.1
+  # timeago: ^3.7.1
+  # crypto: ^3.0.3
+  # stream_transform: ^2.1.1
+  # mobile_scanner: ^7.0.1
+  # open_filex: ^4.7.0
+  # file_saver: ^0.3.1
+  # appinio_social_share: ^0.3.2
+  # installed_apps: ^1.6.0
+  # characters: ^1.4.0
+  # visibility_detector: ^0.4.0+2
+  # cryptography: ^2.7.0
+
+  # # Social & Web Content
+  # flutter_social_embeds: ^1.1.0
+  # youtube_player_flutter: ^9.1.1
+  # flutter_html: ^3.0.0
+  # html: ^0.15.4
+
+  # # Updates
+  # in_app_update: ^4.2.3
+
+  # # Messaging
+  # stomp_dart_client: ^2.1.3
+
+  # # Splash
+  # flutter_native_splash: ^2.4.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.13
+  freezed: ^2.4.1
+  json_serializable: ^6.9.2
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/lottie/
+    - assets/translations/
+
+  # fonts:
+  #   - family: CustomIcon
+  #     fonts:
+  #       - asset: assets/fonts/CustomIcon.ttf

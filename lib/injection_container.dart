@@ -1,0 +1,94 @@
+import 'package:d2ycredi/core/database/app_database.dart';
+import 'package:d2ycredi/features/debt/data/datasources/debt_local_datasource.dart';
+import 'package:d2ycredi/features/debt/data/repositories/debt_repository_impl.dart';
+import 'package:d2ycredi/features/debt/domain/repositories/debt_repository.dart';
+import 'package:d2ycredi/features/debt/domain/usecases/add_debt_usecase.dart';
+import 'package:d2ycredi/features/debt/domain/usecases/delete_debt_usecase.dart';
+import 'package:d2ycredi/features/debt/domain/usecases/get_debt_detail_usecase.dart';
+import 'package:d2ycredi/features/debt/domain/usecases/get_debt_summary_usecase.dart';
+import 'package:d2ycredi/features/debt/domain/usecases/get_debts_usecase.dart';
+import 'package:d2ycredi/features/debt/domain/usecases/mark_as_paid_usecase.dart';
+import 'package:d2ycredi/features/debt/domain/usecases/update_debt_usecase.dart';
+import 'package:d2ycredi/features/debt/presentation/bloc/add_debt/add_debt_bloc.dart';
+import 'package:d2ycredi/features/debt/presentation/bloc/debt/debt_bloc.dart';
+import 'package:d2ycredi/features/debt/presentation/bloc/detail_debt/detail_debt_bloc.dart';
+import 'package:d2ycredi/features/debt/presentation/bloc/edit_debt/edit_debt_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'core/services/storage_service.dart';
+import 'core/services/local_notification_service.dart';
+import 'core/services/language_service.dart';
+import 'core/services/permission_service.dart';
+
+final getIt = GetIt.instance;
+
+Future<void> setupDependencyInjection() async {
+  // Core Services
+  await _registerServices();
+  
+  await _registerDebt();
+}
+
+Future<void> _registerServices() async {
+
+  final storageService = StorageService();
+  getIt.registerSingleton<StorageService>(storageService);
+
+  final databaseService = AppDatabase();
+  getIt.registerSingleton<AppDatabase>(databaseService);
+
+  final notificationService = LocalNotificationService();
+  await notificationService.init();
+  getIt.registerSingleton<LocalNotificationService>(notificationService);
+
+  getIt.registerSingleton<LanguageService>(LanguageService());
+  getIt.registerSingleton<PermissionService>(PermissionService());
+}
+
+Future<void> _registerDebt() async {
+  // Data sources
+  getIt.registerLazySingleton<DebtLocalDataSource>(
+    () => DebtLocalDataSourceImpl(database: getIt()),
+  );
+
+  // Repositories
+  getIt.registerLazySingleton<DebtRepository>(
+    () => DebtRepositoryImpl(localDataSource: getIt()),
+  );
+
+  // Use cases
+  getIt.registerLazySingleton(() => GetDebtsUseCase(getIt()));
+  getIt.registerLazySingleton(() => GetDebtSummaryUseCase(getIt()));
+  getIt.registerLazySingleton(() => DeleteDebtUseCase(getIt()));
+  getIt.registerLazySingleton(() => AddDebtUseCase(getIt()));
+   getIt.registerLazySingleton(() => UpdateDebtUseCase(getIt()));
+  getIt.registerLazySingleton(() => GetDebtDetailUseCase(getIt()));
+  getIt.registerLazySingleton(() => MarkAsPaidUseCase(getIt()));
+
+  // Bloc
+  getIt.registerFactory(
+    () => DebtBloc(
+      getDebtsUseCase: getIt(),
+      getDebtSummaryUseCase: getIt(),
+      deleteDebtUseCase: getIt(),
+      debtRepository: getIt(),
+    ),
+  );
+  getIt.registerFactory(
+    () => AddDebtBloc(
+      addDebtUseCase: getIt(),
+    ),
+  );
+  getIt.registerFactory(
+    () => EditDebtBloc(
+      getDebtDetailUseCase: getIt(),
+      deleteDebtUseCase: getIt(),
+      updateDebtUseCase: getIt(),
+    ),
+  );
+  getIt.registerFactory(
+    () => DetailDebtBloc(
+      getDebtDetailUseCase: getIt(),
+      markAsPaidUseCase: getIt(),
+    ),
+  );
+}
