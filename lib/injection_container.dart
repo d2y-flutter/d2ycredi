@@ -13,9 +13,15 @@ import 'package:d2ycredi/features/debt/presentation/bloc/add_debt/add_debt_bloc.
 import 'package:d2ycredi/features/debt/presentation/bloc/debt/debt_bloc.dart';
 import 'package:d2ycredi/features/debt/presentation/bloc/detail_debt/detail_debt_bloc.dart';
 import 'package:d2ycredi/features/debt/presentation/bloc/edit_debt/edit_debt_bloc.dart';
+import 'package:d2ycredi/features/reminder/domain/usecases/update_reminder_usecase.dart';
+import 'package:d2ycredi/features/reminder/presentation/bloc/reminder/reminder_bloc.dart';
+import 'package:d2ycredi/features/summary/data/datasources/summary_local_datasource.dart';
+import 'package:d2ycredi/features/summary/data/repositories/summary_repository_impl.dart';
+import 'package:d2ycredi/features/summary/domain/repositories/summary_repository.dart';
+import 'package:d2ycredi/features/summary/domain/usecases/get_summary_stats_usecase.dart';
+import 'package:d2ycredi/features/summary/presentation/bloc/summary_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'core/services/storage_service.dart';
-import 'core/services/local_notification_service.dart';
 import 'core/services/language_service.dart';
 import 'core/services/permission_service.dart';
 
@@ -26,6 +32,8 @@ Future<void> setupDependencyInjection() async {
   await _registerServices();
   
   await _registerDebt();
+  await _registerReminder();
+  await _registerSummary();
 }
 
 Future<void> _registerServices() async {
@@ -36,9 +44,9 @@ Future<void> _registerServices() async {
   final databaseService = AppDatabase();
   getIt.registerSingleton<AppDatabase>(databaseService);
 
-  final notificationService = LocalNotificationService();
-  await notificationService.init();
-  getIt.registerSingleton<LocalNotificationService>(notificationService);
+  // final notificationService = LocalNotificationService();
+  // await notificationService.init();
+  // getIt.registerSingleton<LocalNotificationService>(notificationService);
 
   getIt.registerSingleton<LanguageService>(LanguageService());
   getIt.registerSingleton<PermissionService>(PermissionService());
@@ -90,5 +98,35 @@ Future<void> _registerDebt() async {
       getDebtDetailUseCase: getIt(),
       markAsPaidUseCase: getIt(),
     ),
+  );
+}
+
+Future<void> _registerSummary() async {
+  // Data sources
+  getIt.registerLazySingleton<SummaryLocalDataSource>(
+    () => SummaryLocalDataSourceImpl(debtLocalDataSource: getIt()),
+  );
+
+  // Repositories
+  getIt.registerLazySingleton<SummaryRepository>(
+    () => SummaryRepositoryImpl(localDataSource: getIt()),
+  );
+
+  // Use cases
+  getIt.registerLazySingleton(() => GetSummaryStatsUseCase(getIt()));
+
+  // Bloc
+  getIt.registerFactory(
+    () => SummaryBloc(getSummaryStatsUseCase: getIt()),
+  );
+}
+
+Future<void> _registerReminder() async {
+  // Use cases
+  getIt.registerLazySingleton(() => UpdateReminderUseCase(getIt()));
+
+  // Bloc
+  getIt.registerFactory(
+    () => ReminderBloc(getDebtDetailUseCase: getIt(), updateReminderUseCase: getIt()),
   );
 }

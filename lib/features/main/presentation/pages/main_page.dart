@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
         context.go(AppRoutes.home);
         break;
       case 1:
-        context.go(AppRoutes.explore);
+        context.go(AppRoutes.summary);
         break;
       case 2:
         context.go(AppRoutes.notifications);

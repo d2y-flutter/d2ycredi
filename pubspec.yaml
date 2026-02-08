@@ -44,8 +44,8 @@ dependencies:
 
   # # Network
   # dio: ^5.8.0+1
-  internet_connection_checker: ^3.0.1
-  chucker_flutter: ^1.8.5
+  # internet_connection_checker: ^3.0.1
+  # chucker_flutter: ^1.8.5
 
   # # Images
   cached_network_image: ^3.4.1
@@ -113,7 +113,7 @@ dependencies:
   url_launcher: ^6.3.1
   # webview_flutter: ^4.13.0
   # app_links: ^6.4.0
-  flutter_local_notifications: ^19.3.0
+  # flutter_local_notifications: ^19.3.0
   timezone: ^0.10.1
   # collection: ^1.19.1
   # timeago: ^3.7.1

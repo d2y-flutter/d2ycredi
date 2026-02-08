@@ -20,6 +20,9 @@ class AppRoutes {
    static const String addDebt = '/debt/add';
    static const String detailDebt = '/debt/detail';
    static const String editDebt = '/debt/edit';
+   static const String setReminder = '/set/reminder';
+   static const String summary = '/summary';
+
 
   // Feature Routes
   static const String productDetail = '/product/:id';

@@ -58,12 +58,9 @@ class _SplashPageState extends State<SplashPage>
     if (!mounted) return;
 
     final isFirstLaunch = await RouteGuard.isFirstLaunch();
-    final isAuthenticated = await RouteGuard.isAuthenticated();
 
     if (isFirstLaunch) {
       context.go(AppRoutes.onboarding);
-    } else if (isAuthenticated) {
-      context.go(AppRoutes.home);
     } else {
       context.go(AppRoutes.home);
     }

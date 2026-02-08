@@ -163,7 +163,7 @@ class DebtDetailView extends StatelessWidget {
                   label: 'Set Reminder',
                   icon: Icons.notifications_active,
                   onPressed: () {
-                    context.push('/debt/reminder/${debt.id}');
+                    context.push('/set/reminder/${debt.id}');
                   },
                   fullWidth: true,
                   type: D2YButtonType.outlined,
