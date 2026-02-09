@@ -321,12 +321,12 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       primaryColor: AppColor.primary,
-      scaffoldBackgroundColor: AppColor.primarySurface,
+      scaffoldBackgroundColor: AppColor.darkBackground,
       colorScheme: const ColorScheme.dark(
         primary: AppColor.primary,
         secondary: AppColor.secondary,
         error: AppColor.error,
-        surface: AppColor.primarySurface,
+        surface: AppColor.darkBackground,
         onPrimary: AppColor.textOnDark,
         onSecondary: AppColor.textOnDark,
         onError: AppColor.white,
@@ -336,7 +336,7 @@ class AppTheme {
       appBarTheme: AppBarTheme(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: AppColor.primarySurface,
+        backgroundColor: AppColor.darkBackground,
         foregroundColor: AppColor.white,
         surfaceTintColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle.light,
@@ -356,14 +356,14 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppConstants.radiusMD),
         ),
-        color: AppColor.primarySurface,
+        color: AppColor.darkBackground,
         surfaceTintColor: Colors.transparent,
         margin: const EdgeInsets.all(AppConstants.spaceMD),
       ),
 
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColor.primarySurface,
+        fillColor: AppColor.darkBackground,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppConstants.paddingLG,
           vertical: AppConstants.paddingMD,
@@ -440,7 +440,7 @@ class AppTheme {
       ),
 
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: AppColor.primarySurface,
+        backgroundColor: AppColor.darkBackground,
         selectedItemColor: AppColor.primary,
         unselectedItemColor: AppColor.grey500,
         type: BottomNavigationBarType.fixed,
@@ -449,7 +449,7 @@ class AppTheme {
 
       dialogTheme: DialogThemeData(
         elevation: AppConstants.elevationLG,
-        backgroundColor: AppColor.primarySurface,
+        backgroundColor: AppColor.darkBackground,
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppConstants.radiusLG),
@@ -466,7 +466,7 @@ class AppTheme {
       ),
 
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: AppColor.primarySurface,
+        backgroundColor: AppColor.darkBackground,
         surfaceTintColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(

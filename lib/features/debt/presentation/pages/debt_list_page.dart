@@ -9,6 +9,7 @@ import 'package:d2ycredi/features/debt/presentation/bloc/debt/debt_event.dart';
 import 'package:d2ycredi/features/debt/presentation/bloc/debt/debt_state.dart';
 import 'package:d2ycredi/features/debt/presentation/widgets/debt_filter_chip.dart';
 import 'package:d2ycredi/features/debt/presentation/widgets/debt_summary_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -41,7 +42,6 @@ class _DebtListPageState extends State<DebtListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.background,
       body: SafeArea(
         child: BlocConsumer<DebtBloc, DebtState>(
           listener: (context, state) {
@@ -82,9 +82,6 @@ class _DebtListPageState extends State<DebtListPage> {
   }
 
   Widget _buildContent(DebtLoaded state) {
-     final data = state.filteredDebts;
-     print("state.stats.List : $data");
-
     return RefreshIndicator(
       onRefresh: () async {
         context.read<DebtBloc>().add(LoadDebts());
@@ -175,10 +172,10 @@ class _DebtListPageState extends State<DebtListPage> {
           ),
           IconButton(
             onPressed: () {
-              // Navigate to settings
+              context.push("/settings");
             },
             icon: const Icon(
-              Icons.settings_outlined,
+              CupertinoIcons.settings,
               color: AppColor.textPrimary,
             ),
           ),

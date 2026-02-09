@@ -15,6 +15,12 @@ import 'package:d2ycredi/features/debt/presentation/bloc/detail_debt/detail_debt
 import 'package:d2ycredi/features/debt/presentation/bloc/edit_debt/edit_debt_bloc.dart';
 import 'package:d2ycredi/features/reminder/domain/usecases/update_reminder_usecase.dart';
 import 'package:d2ycredi/features/reminder/presentation/bloc/reminder/reminder_bloc.dart';
+import 'package:d2ycredi/features/settings/data/datasources/settings_local_datasource.dart';
+import 'package:d2ycredi/features/settings/data/repositories/settings_repository_impl.dart';
+import 'package:d2ycredi/features/settings/domain/repositories/settings_repository.dart';
+import 'package:d2ycredi/features/settings/domain/usecases/get_settings_usecase.dart';
+import 'package:d2ycredi/features/settings/domain/usecases/update_settings_usecase.dart';
+import 'package:d2ycredi/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:d2ycredi/features/summary/data/datasources/summary_local_datasource.dart';
 import 'package:d2ycredi/features/summary/data/repositories/summary_repository_impl.dart';
 import 'package:d2ycredi/features/summary/domain/repositories/summary_repository.dart';
@@ -34,6 +40,7 @@ Future<void> setupDependencyInjection() async {
   await _registerDebt();
   await _registerReminder();
   await _registerSummary();
+  await _registerSettings();
 }
 
 Future<void> _registerServices() async {
@@ -128,5 +135,30 @@ Future<void> _registerReminder() async {
   // Bloc
   getIt.registerFactory(
     () => ReminderBloc(getDebtDetailUseCase: getIt(), updateReminderUseCase: getIt()),
+  );
+}
+
+Future<void> _registerSettings() async {
+  // Data sources
+  getIt.registerLazySingleton<SettingsLocalDataSource>(
+    () => SettingsLocalDataSourceImpl(storageService: getIt()),
+  );
+
+  // Repositories
+  getIt.registerLazySingleton<SettingsRepository>(
+    () => SettingsRepositoryImpl(localDataSource: getIt()),
+  );
+
+  // Use cases
+  getIt.registerLazySingleton(() => GetSettingsUseCase(getIt()));
+  getIt.registerLazySingleton(() => UpdateSettingsUseCase(getIt()));
+
+  // Bloc
+  getIt.registerFactory(
+    () => SettingsBloc(
+      getSettingsUseCase: getIt(),
+      updateSettingsUseCase: getIt(),
+      settingsRepository: getIt(),
+    ),
   );
 }

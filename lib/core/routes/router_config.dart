@@ -5,6 +5,9 @@ import 'package:d2ycredi/features/debt/presentation/pages/edit_debt_page.dart';
 import 'package:d2ycredi/features/main/presentation/pages/main_page.dart';
 import 'package:d2ycredi/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:d2ycredi/features/reminder/presentation/pages/set_reminder_page.dart';
+import 'package:d2ycredi/features/settings/presentation/pages/about_page.dart';
+import 'package:d2ycredi/features/settings/presentation/pages/privacy_policy_page.dart';
+import 'package:d2ycredi/features/settings/presentation/pages/settings_page.dart';
 import 'package:d2ycredi/features/splash/presentation/pages/splash_page.dart';
 import 'package:d2ycredi/features/summary/presentation/pages/summary_page.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +69,25 @@ class RouterConfig {
             final id = state.pathParameters['id']!;
             return SetReminderPage(debtId: id);
           },
+        ),
+
+        // Tambahkan routes untuk settings
+        GoRoute(
+          path: '/settings',
+          name: 'settings',
+          builder: (context, state) => const SettingsPage(),
+          routes: [
+            GoRoute(
+              path: 'about',
+              name: 'about',
+              builder: (context, state) => const AboutPage(),
+            ),
+            GoRoute(
+              path: 'privacy',
+              name: 'privacy',
+              builder: (context, state) => const PrivacyPolicyPage(),
+            ),
+          ],
         ),
 
         ShellRoute(

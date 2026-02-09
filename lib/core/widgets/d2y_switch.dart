@@ -115,49 +115,50 @@ class D2YCustomSwitch extends StatelessWidget {
     this.activeColor,
     this.inactiveColor,
     this.thumbColor,
-    this.width = 50,
-    this.height = 28,
-    this.duration = const Duration(milliseconds: 200),
+    this.width = 52,
+    this.height = 32,
+    this.duration = const Duration(milliseconds: 180),
   });
 
   @override
   Widget build(BuildContext context) {
+    final double padding = 3;
+    final double thumbSize = height - padding * 2;
+
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: onChanged != null ? () => onChanged!(!value) : null,
       child: AnimatedContainer(
         duration: duration,
         width: width,
         height: height,
+        padding: EdgeInsets.all(padding),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(height / 2),
           color: value
               ? (activeColor ?? AppColor.primary)
               : (inactiveColor ?? AppColor.grey300),
         ),
-        child: Stack(
-          children: [
-            AnimatedPositioned(
-              duration: duration,
-              curve: Curves.easeInOut,
-              left: value ? width - height : 0,
-              child: Container(
-                width: height,
-                height: height,
-                margin: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: thumbColor ?? AppColor.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColor.shadowMedium,
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
+        child: AnimatedAlign(
+          duration: duration,
+          curve: Curves.easeOutCubic,
+          alignment:
+              value ? Alignment.centerRight : Alignment.centerLeft,
+          child: Container(
+            width: thumbSize,
+            height: thumbSize,
+            decoration: BoxDecoration(
+              color: thumbColor ?? AppColor.white,
+              shape: BoxShape.circle,
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 3,
+                  offset: Offset(0, 2),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

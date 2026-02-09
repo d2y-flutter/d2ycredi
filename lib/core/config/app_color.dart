@@ -106,4 +106,10 @@ class AppColor {
   static const Color shadowLight = Color(0x0A000000);
   static const Color shadowMedium = Color(0x1A000000);
   static const Color shadowDark = Color(0x33000000);
+
+  // Dark specific
+  static const Color darkBackground = Color(0xFF0F172A); // slate-900
+  static const Color darkSurface = Color(0xFF1E293B);    // slate-800
+  static const Color darkCard = Color(0xFF1E293B);
+  static const Color darkBorder = Color(0xFF334155);
 }
