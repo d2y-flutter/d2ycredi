@@ -141,7 +141,7 @@ Future<void> _registerReminder() async {
 Future<void> _registerSettings() async {
   // Data sources
   getIt.registerLazySingleton<SettingsLocalDataSource>(
-    () => SettingsLocalDataSourceImpl(storageService: getIt()),
+    () => SettingsLocalDataSourceImpl(storageService: getIt(), debtLocalDataSource: getIt()),
   );
 
   // Repositories

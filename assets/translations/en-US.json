@@ -1,5 +1,6 @@
 {
-  "app_name": "D2YCredi",
+  "app_name": "D2YCredit",
+  
   "debt": {
     "title": "Debt List",
     "empty_title": "No Data",
@@ -10,10 +11,66 @@
     "delete": "Delete",
     "delete_confirm": "Are you sure you want to delete debt from {name}?"
   },
+  
   "common": {
     "cancel": "Cancel",
     "confirm": "Confirm",
+    "delete": "Delete",
+    "save": "Save",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "loading": "Loading...",
     "see_all": "See All",
     "latest_transaction": "LATEST TRANSACTIONS"
+  },
+
+  "settings": {
+    "title": "Settings",
+    "loading": "Loading settings...",
+    "preferences": "PREFERENCES",
+    "data_security": "DATA & SECURITY",
+    "others": "OTHERS",
+    "version": "VERSION {0}",
+    
+    "notifications": {
+      "title": "Notifications",
+      "subtitle": "Receive debt due date reminders"
+    },
+    
+    "language": {
+      "title": "Language",
+      "subtitle": "App language",
+      "select": "Select Language",
+      "changed": "Language changed successfully"
+    },
+    
+    "theme": {
+      "title": "Theme Mode",
+      "subtitle": "App appearance"
+    },
+    
+    "backup": {
+      "title": "Backup & Restore",
+      "subtitle": "Backup and restore your data"
+    },
+    
+    "reset": {
+      "title": "Reset All Data",
+      "subtitle": "Delete all data and loan history",
+      "confirm_title": "Reset All Data",
+      "confirm_message": "Are you sure you want to delete all data? This action cannot be undone.",
+      "success": "All data has been deleted"
+    },
+    
+    "about": {
+      "title": "About App",
+      "subtitle": "Version info and developer"
+    },
+    
+    "privacy": {
+      "title": "Privacy Policy",
+      "subtitle": "Terms of use of personal data"
+    }
   }
 }

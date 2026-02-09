@@ -13,7 +13,7 @@ class SettingsItem extends StatelessWidget {
   final VoidCallback? onTap;
 
   const SettingsItem({
-    Key? key,
+    super.key,
     required this.icon,
     required this.iconColor,
     required this.iconBackgroundColor,
@@ -21,7 +21,7 @@ class SettingsItem extends StatelessWidget {
     this.subtitle,
     this.trailing,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

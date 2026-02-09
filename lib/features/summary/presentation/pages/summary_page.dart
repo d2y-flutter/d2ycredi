@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_to_list_in_spreads
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,7 +16,7 @@ import '../widgets/summary_header_card.dart';
 import '../widgets/summary_stats_card.dart';
 
 class SummaryPage extends StatelessWidget {
-  const SummaryPage({Key? key}) : super(key: key);
+  const SummaryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class SummaryPage extends StatelessWidget {
 }
 
 class SummaryView extends StatelessWidget {
-  const SummaryView({Key? key}) : super(key: key);
+  const SummaryView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +121,7 @@ class SummaryView extends StatelessWidget {
     // Sort years descending
     final sortedYears = groupedByYear.keys.toList()..sort((a, b) => b.compareTo(a));
 
-    return RefreshIndicator(
+    return RefreshIndicator.adaptive(
       onRefresh: () async {
         context.read<SummaryBloc>().add(LoadSummaryStats());
       },

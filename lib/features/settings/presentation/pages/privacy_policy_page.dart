@@ -5,7 +5,7 @@ import '../../../../core/config/app_constants.dart';
 import '../../../../core/config/app_text_styles.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
-  const PrivacyPolicyPage({Key? key}) : super(key: key);
+  const PrivacyPolicyPage({super.key});
 
   @override
   Widget build(BuildContext context) {

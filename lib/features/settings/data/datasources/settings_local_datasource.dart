@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:d2ycredi/features/debt/data/datasources/debt_local_datasource.dart';
+
 import '../../../../core/services/storage_service.dart';
 import '../../domain/entities/app_settings.dart';
 
@@ -10,9 +12,10 @@ abstract class SettingsLocalDataSource {
 
 class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
   final StorageService storageService;
+  final DebtLocalDataSource debtLocalDataSource;
   static const String _settingsKey = 'app_settings';
 
-  SettingsLocalDataSourceImpl({required this.storageService});
+  SettingsLocalDataSourceImpl({required this.storageService, required this.debtLocalDataSource});
 
   @override
   Future<AppSettings> getSettings() async {
@@ -38,6 +41,6 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
 
   @override
   Future<void> clearAllData() async {
-    await storageService.deleteAll();
+    await debtLocalDataSource.clearAllDebts();
   }
 }

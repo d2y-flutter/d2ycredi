@@ -1,5 +1,6 @@
 {
-  "app_name": "D2YCredi",
+  "app_name": "D2YCredit",
+  
   "debt": {
     "title": "Daftar Utang",
     "empty_title": "Tidak ada data",
@@ -10,10 +11,66 @@
     "delete": "Hapus",
     "delete_confirm": "Apakah Anda yakin ingin menghapus utang dari {name}?"
   },
+  
   "common": {
     "cancel": "Batal",
     "confirm": "Konfirmasi",
+    "delete": "Hapus",
+    "save": "Simpan",
+    "edit": "Ubah",
+    "add": "Tambah",
+    "search": "Cari",
+    "loading": "Memuat...",
     "see_all": "Lihat Semua",
     "latest_transaction": "TRANSAKSI TERBARU"
+  },
+
+  "settings": {
+    "title": "Pengaturan",
+    "loading": "Memuat pengaturan...",
+    "preferences": "PREFERENSI",
+    "data_security": "DATA & KEAMANAN",
+    "others": "LAINNYA",
+    "version": "VERSI {0}",
+    
+    "notifications": {
+      "title": "Notifikasi",
+      "subtitle": "Terima pengingat jatuh tempo utang"
+    },
+    
+    "language": {
+      "title": "Bahasa",
+      "subtitle": "Bahasa aplikasi",
+      "select": "Pilih Bahasa",
+      "changed": "Bahasa berhasil diubah"
+    },
+    
+    "theme": {
+      "title": "Mode Tema",
+      "subtitle": "Tampilan aplikasi"
+    },
+    
+    "backup": {
+      "title": "Backup & Restore",
+      "subtitle": "Cadangkan dan pulihkan data Anda"
+    },
+    
+    "reset": {
+      "title": "Reset Semua Data",
+      "subtitle": "Hapus seluruh data dan riwayat pinjaman",
+      "confirm_title": "Reset Semua Data",
+      "confirm_message": "Apakah Anda yakin ingin menghapus semua data? Tindakan ini tidak dapat dibatalkan.",
+      "success": "Semua data berhasil dihapus"
+    },
+    
+    "about": {
+      "title": "Tentang Aplikasi",
+      "subtitle": "Informasi versi dan pengembang"
+    },
+    
+    "privacy": {
+      "title": "Kebijakan Privasi",
+      "subtitle": "Ketentuan penggunaan data pribadi"
+    }
   }
 }

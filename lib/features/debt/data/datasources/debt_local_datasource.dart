@@ -8,6 +8,7 @@ abstract class DebtLocalDataSource {
   Future<void> addDebt(DebtModel debt);
   Future<void> updateDebt(DebtModel debt);
   Future<void> deleteDebt(String id);
+  Future<void> clearAllDebts();
 }
 
 class DebtLocalDataSourceImpl implements DebtLocalDataSource {
@@ -61,5 +62,11 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  @override
+  Future<void> clearAllDebts() async {
+    final db = await database.database;
+    await db.delete(_table); 
   }
 }

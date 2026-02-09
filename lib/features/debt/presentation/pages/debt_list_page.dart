@@ -9,11 +9,11 @@ import 'package:d2ycredi/features/debt/presentation/bloc/debt/debt_event.dart';
 import 'package:d2ycredi/features/debt/presentation/bloc/debt/debt_state.dart';
 import 'package:d2ycredi/features/debt/presentation/widgets/debt_filter_chip.dart';
 import 'package:d2ycredi/features/debt/presentation/widgets/debt_summary_card.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../core/config/app_color.dart';
 import '../../../../core/config/app_constants.dart';
@@ -82,7 +82,7 @@ class _DebtListPageState extends State<DebtListPage> {
   }
 
   Widget _buildContent(DebtLoaded state) {
-    return RefreshIndicator(
+    return RefreshIndicator.adaptive(
       onRefresh: () async {
         context.read<DebtBloc>().add(LoadDebts());
       },
@@ -153,7 +153,7 @@ class _DebtListPageState extends State<DebtListPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'PERINGAT UTANG',
+                  'app_name'.tr().toUpperCase(),
                   style: AppTextStyles.labelSmall.copyWith(
                     color: AppColor.textSecondary,
                     letterSpacing: 1.2,
@@ -161,7 +161,7 @@ class _DebtListPageState extends State<DebtListPage> {
                 ),
                 const SizedBox(height: AppConstants.spaceXS),
                 Text(
-                  'Daftar Utang',
+                  'debt.title'.tr(),
                   style: AppTextStyles.h3.copyWith(
                     color: AppColor.textPrimary,
                     fontWeight: FontWeight.bold,
@@ -194,7 +194,7 @@ class _DebtListPageState extends State<DebtListPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'TRANSAKSI TERBARU',
+                'common.latest_transaction'.tr(),
                 style: AppTextStyles.labelMedium.copyWith(
                   color: AppColor.textSecondary,
                   fontWeight: FontWeight.w600,
@@ -206,7 +206,7 @@ class _DebtListPageState extends State<DebtListPage> {
                   // View all
                 },
                 child: Text(
-                  'Lihat Semua',
+                  'common.see_all'.tr(),
                   style: AppTextStyles.labelMedium.copyWith(
                     color: AppColor.primary,
                     fontWeight: FontWeight.w600,
@@ -401,9 +401,8 @@ class _DebtListPageState extends State<DebtListPage> {
   Future<void> _showDeleteConfirmation(Debt debt) async {
     final confirmed = await D2YModal.confirm(
       context: context,
-      title: 'Hapus Utang',
-      message:
-          'Apakah Anda yakin ingin menghapus utang dari ${debt.borrowerName}?',
+      title: 'debt.delete'.tr(),
+      message: 'debt.delete_confirm'.tr(args: [debt.borrowerName]),
       confirmText: 'Hapus',
       cancelText: 'Batal',
     );

@@ -1,8 +1,12 @@
+import 'package:d2ycredi/core/services/language_service.dart';
+import 'package:d2ycredi/core/widgets/d2y_bottom_sheet.dart';
 import 'package:d2ycredi/core/widgets/d2y_modal.dart';
-import 'package:d2ycredi/features/settings/domain/entities/app_settings.dart' as setting;
+import 'package:d2ycredi/features/settings/presentation/widgets/language_bottom_sheet.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../../core/config/app_color.dart';
 import '../../../../core/config/app_constants.dart';
 import '../../../../core/config/app_text_styles.dart';
@@ -13,13 +17,12 @@ import '../../../../injection_container.dart';
 import '../bloc/settings_bloc.dart';
 import '../bloc/settings_event.dart';
 import '../bloc/settings_state.dart';
-import '../widgets/settings_section.dart';
 import '../widgets/settings_item.dart';
-import '../widgets/theme_selection_dialog.dart';
+import '../widgets/settings_section.dart';
 
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +38,23 @@ class SettingsPage extends StatelessWidget {
 }
 
 class SettingsView extends StatelessWidget {
-  const SettingsView({Key? key}) : super(key: key);
+  const SettingsView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final languageService = LanguageService();
+
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: AppBar(
         backgroundColor: AppColor.white,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColor.textPrimary),
+          onPressed: () => context.pop(),
+        ),
         title: Text(
-          'Pengaturan',
+          'settings.title'.tr(),
           style: AppTextStyles.h5.copyWith(
             color: AppColor.textPrimary,
             fontWeight: FontWeight.w600,
@@ -63,7 +72,7 @@ class SettingsView extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is SettingsLoading) {
-            return D2YLoading.center(message: 'Memuat pengaturan...');
+            return D2YLoading.center(message: 'settings.loading'.tr());
           }
 
           if (state is SettingsError && state is! SettingsUpdateSuccess) {
@@ -87,7 +96,7 @@ class SettingsView extends StatelessWidget {
           }
 
           if (state is SettingsLoaded) {
-            return _buildContent(context, state);
+            return _buildContent(context, state, languageService);
           }
 
           return const SizedBox();
@@ -96,7 +105,13 @@ class SettingsView extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, SettingsLoaded state) {
+  Widget _buildContent(
+    BuildContext context,
+    SettingsLoaded state,
+    LanguageService languageService,
+  ) {
+    final currentLocale = languageService.getCurrentLocale(context);
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,15 +120,15 @@ class SettingsView extends StatelessWidget {
 
           // PREFERENSI Section
           SettingsSection(
-            title: 'PREFERENSI',
+            title: 'settings.preferences'.tr(),
             children: [
               // Notifikasi
               SettingsItem(
                 icon: Icons.notifications_outlined,
                 iconColor: AppColor.primary,
                 iconBackgroundColor: AppColor.primarySurface,
-                title: 'Notifikasi',
-                subtitle: 'Terima pengingat jatuh tempo utang',
+                title: 'settings.notifications.title'.tr(),
+                subtitle: 'settings.notifications.subtitle'.tr(),
                 trailing: D2YCustomSwitch(
                   value: state.settings.notificationsEnabled,
                   onChanged: (value) {
@@ -130,24 +145,24 @@ class SettingsView extends StatelessWidget {
                 icon: Icons.language,
                 iconColor: AppColor.warning,
                 iconBackgroundColor: AppColor.warningSurface,
-                title: 'Bahasa',
-                subtitle: state.settings.language.displayName,
+                title: 'settings.language.title'.tr(),
+                subtitle: languageService.getLanguageName(currentLocale),
                 onTap: () {
-                  // Navigate to language selection
+                  _showLanguageBottomSheet(context, languageService);
                 },
               ),
 
               // Mode Tema
-              SettingsItem(
-                icon: Icons.palette_outlined,
-                iconColor: AppColor.secondary,
-                iconBackgroundColor: AppColor.secondarySurface,
-                title: 'Mode Tema',
-                subtitle: state.settings.themeMode.displayName,
-                onTap: () {
-                  _showThemeDialog(context, state.settings.themeMode);
-                },
-              ),
+              // SettingsItem(
+              //   icon: Icons.palette_outlined,
+              //   iconColor: AppColor.secondary,
+              //   iconBackgroundColor: AppColor.secondarySurface,
+              //   title: 'settings.theme.title'.tr(),
+              //   subtitle: state.settings.themeMode.displayName,
+              //   onTap: () {
+              //     _showThemeDialog(context, state.settings.themeMode);
+              //   },
+              // ),
             ],
           ),
 
@@ -155,15 +170,15 @@ class SettingsView extends StatelessWidget {
 
           // DATA & KEAMANAN Section
           SettingsSection(
-            title: 'DATA & KEAMANAN',
+            title: 'settings.data_security'.tr(),
             children: [
               // Backup & Restore
               SettingsItem(
                 icon: Icons.cloud_upload_outlined,
                 iconColor: AppColor.info,
                 iconBackgroundColor: AppColor.infoSurface,
-                title: 'Backup & Restore',
-                subtitle: 'Cadangkan dan pulihkan data Anda',
+                title: 'settings.backup.title'.tr(),
+                subtitle: 'settings.backup.subtitle'.tr(),
                 onTap: () {
                   // Navigate to backup page
                 },
@@ -174,8 +189,8 @@ class SettingsView extends StatelessWidget {
                 icon: Icons.delete_outline,
                 iconColor: AppColor.error,
                 iconBackgroundColor: AppColor.errorSurface,
-                title: 'Reset Semua Data',
-                subtitle: 'Hapus seluruh data dan riwayat pinjaman',
+                title: 'settings.reset.title'.tr(),
+                subtitle: 'settings.reset.subtitle'.tr(),
                 onTap: () {
                   _showClearDataConfirmation(context);
                 },
@@ -187,15 +202,15 @@ class SettingsView extends StatelessWidget {
 
           // LAINNYA Section
           SettingsSection(
-            title: 'LAINNYA',
+            title: 'settings.others'.tr(),
             children: [
               // Tentang Aplikasi
               SettingsItem(
                 icon: Icons.info_outline,
                 iconColor: AppColor.textSecondary,
                 iconBackgroundColor: AppColor.grey200,
-                title: 'Tentang Aplikasi',
-                subtitle: 'Informasi versi dan pengembang',
+                title: 'settings.about.title'.tr(),
+                subtitle: 'settings.about.subtitle'.tr(),
                 onTap: () {
                   context.push('/settings/about');
                 },
@@ -206,8 +221,8 @@ class SettingsView extends StatelessWidget {
                 icon: Icons.privacy_tip_outlined,
                 iconColor: AppColor.textSecondary,
                 iconBackgroundColor: AppColor.grey200,
-                title: 'Kebijakan Privasi',
-                subtitle: 'Ketentuan penggunaan data pribadi',
+                title: 'settings.privacy.title'.tr(),
+                subtitle: 'settings.privacy.subtitle'.tr(),
                 onTap: () {
                   context.push('/settings/privacy');
                 },
@@ -222,7 +237,7 @@ class SettingsView extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'PERINGAT UTANG',
+                  'app_name'.tr().toUpperCase(),
                   style: AppTextStyles.labelSmall.copyWith(
                     color: AppColor.textSecondary,
                     letterSpacing: 1.2,
@@ -230,7 +245,7 @@ class SettingsView extends StatelessWidget {
                 ),
                 const SizedBox(height: AppConstants.spaceXS),
                 Text(
-                  'VERSI 2.0.0',
+                  'settings.version'.tr(args: ['2.0.0']),
                   style: AppTextStyles.labelSmall.copyWith(
                     color: AppColor.textHint,
                   ),
@@ -245,20 +260,32 @@ class SettingsView extends StatelessWidget {
     );
   }
 
-  void _showThemeDialog(BuildContext context, setting.ThemeMode currentTheme) {
-    showModalBottomSheet(
+  void _showLanguageBottomSheet(
+    BuildContext context,
+    LanguageService languageService,
+  ) {
+    D2YBottomSheet.show(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (modalContext) => ThemeSelectionDialog(
-        currentTheme: currentTheme,
-        onThemeSelected: (theme) {
-          context.read<SettingsBloc>().add(UpdateThemeMode(theme));
-          Navigator.pop(modalContext);
-        },
+      child: LanguageBottomSheet(
+        languageService: languageService,
       ),
     );
   }
+
+  // void _showThemeDialog(BuildContext context, setting.ThemeMode currentTheme) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     backgroundColor: Colors.transparent,
+  //     builder: (modalContext) => ThemeSelectionDialog(
+  //       currentTheme: currentTheme,
+  //       onThemeSelected: (theme) {
+  //         context.read<SettingsBloc>().add(UpdateThemeMode(theme));
+  //         Navigator.pop(modalContext);
+  //       },
+  //     ),
+  //   );
+  // }
 
   Future<void> _showClearDataConfirmation(BuildContext context) async {
     final result = await D2YModal.confirm(
