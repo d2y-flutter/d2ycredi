@@ -1,3 +1,5 @@
+import 'package:d2ycredi/core/utils/avatar_color_utils.dart';
+import 'package:d2ycredi/core/utils/helpers.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/config/app_color.dart';
@@ -11,6 +13,11 @@ class PaymentInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bgColor =
+        AvatarColorUtils.backgroundFromName(debt.borrowerName);
+    final textColor =
+        AvatarColorUtils.textColorFromBackground(bgColor);
+        
     return Container(
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -91,14 +98,11 @@ class PaymentInfoCard extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 24,
-                      backgroundColor:
-                          AppColor.primary.withOpacity(0.1),
+                      backgroundColor: bgColor,
                       child: Text(
-                        debt.borrowerName
-                            .substring(0, 2)
-                            .toUpperCase(),
+                        Helpers.getInitials(debt.borrowerName),
                         style: TextStyle(
-                          color: AppColor.primary,
+                          color: textColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

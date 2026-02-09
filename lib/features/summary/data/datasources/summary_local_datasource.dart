@@ -29,11 +29,42 @@ class SummaryLocalDataSourceImpl implements SummaryLocalDataSource {
       }
     }
 
-    // Calculate percentage change (dummy calculation)
-    final percentageChange = totalActive > 0 ? 15.24 : -2.0;
+    // Calculate real percentage change from previous month
+    final now = DateTime.now();
+    final currentMonthDebts = debts.where((d) {
+      final debtDate = d.loanDate ?? d.dueDate;
+      return debtDate.year == now.year && 
+             debtDate.month == now.month &&
+             d.status == DebtStatus.belum;
+    }).toList();
 
-    // Get monthly data
-    final monthlyData = await getMonthlyHistory(year: DateTime.now().year);
+    final previousMonthDebts = debts.where((d) {
+      final debtDate = d.loanDate ?? d.dueDate;
+      final previousMonth = DateTime(now.year, now.month - 1);
+      return debtDate.year == previousMonth.year && 
+             debtDate.month == previousMonth.month &&
+             d.status == DebtStatus.belum;
+    }).toList();
+
+    final currentMonthTotal = currentMonthDebts.fold<double>(
+      0, 
+      (sum, debt) => sum + debt.amount,
+    );
+    final previousMonthTotal = previousMonthDebts.fold<double>(
+      0, 
+      (sum, debt) => sum + debt.amount,
+    );
+
+    double percentageChange = 0;
+    if (previousMonthTotal > 0) {
+      percentageChange = ((currentMonthTotal - previousMonthTotal) / 
+                         previousMonthTotal) * 100;
+    } else if (currentMonthTotal > 0) {
+      percentageChange = 100;
+    }
+
+    // Get monthly data for current year
+    final monthlyData = await getMonthlyHistory(year: now.year);
 
     return SummaryStats(
       totalActiveDebt: totalActive,
@@ -48,47 +79,102 @@ class SummaryLocalDataSourceImpl implements SummaryLocalDataSource {
   Future<List<MonthlySummary>> getMonthlyHistory({required int year}) async {
     final debts = await debtLocalDataSource.getDebts();
 
-    // Group debts by month
-    final Map<int, List<dynamic>> monthlyDebts = {};
+    // Group debts by year and month
+    final Map<String, Map<String, dynamic>> monthlyGroups = {};
 
     for (var debt in debts) {
-      if (debt.loanDate?.year == year || debt.dueDate.year == year) {
-        final month = debt.loanDate?.month ?? debt.dueDate.month;
-        if (!monthlyDebts.containsKey(month)) {
-          monthlyDebts[month] = [];
-        }
-        monthlyDebts[month]!.add(debt);
+      final debtDate = debt.loanDate ?? debt.dueDate;
+      
+      // Only include debts from the selected year or the year before
+      if (debtDate.year != year && debtDate.year != year - 1) continue;
+
+      final monthKey = '${debtDate.year}-${debtDate.month.toString().padLeft(2, '0')}';
+
+      if (!monthlyGroups.containsKey(monthKey)) {
+        monthlyGroups[monthKey] = {
+          'year': debtDate.year,
+          'month': debtDate.month,
+          'newLoans': <Debt>[],
+          'payments': <Debt>[],
+        };
+      }
+
+      // Categorize as new loan or payment
+      if (debt.status == DebtStatus.belum) {
+        monthlyGroups[monthKey]!['newLoans'].add(debt);
+      } else {
+        monthlyGroups[monthKey]!['payments'].add(debt);
       }
     }
 
-    // Generate monthly summaries
+    // Convert to MonthlySummary list
     final List<MonthlySummary> summaries = [];
 
-    // Add some dummy data for demo
-    summaries.add(
-      const MonthlySummary(
-        month: 'JANUARI',
-        year: 2024,
-        totalNewLoans: 1200000,
-        newLoansCount: 4,
-        totalPayments: 0,
-        paymentsCount: 0,
-        status: 'Meningkat',
-      ),
-    );
+    for (var entry in monthlyGroups.entries) {
+      final data = entry.value;
+      final newLoans = data['newLoans'] as List<Debt>;
+      final payments = data['payments'] as List<Debt>;
 
-    summaries.add(
-      const MonthlySummary(
-        month: 'DESEMBER',
-        year: 2023,
-        totalNewLoans: 2100000,
-        newLoansCount: 6,
-        totalPayments: 1500000,
-        paymentsCount: 5,
-        status: 'Selesai',
-      ),
-    );
+      final totalNewLoans = newLoans.fold<double>(
+        0, 
+        (sum, debt) => sum + debt.amount,
+      );
+      final totalPayments = payments.fold<double>(
+        0, 
+        (sum, debt) => sum + debt.amount,
+      );
+
+      // Determine status
+      String status;
+      if (payments.isEmpty && newLoans.isNotEmpty) {
+        status = 'Meningkat';
+      } else if (payments.isNotEmpty && newLoans.isEmpty) {
+        status = 'Selesai';
+      } else if (totalNewLoans > totalPayments) {
+        status = 'Meningkat';
+      } else if (totalPayments > totalNewLoans) {
+        status = 'Menurun';
+      } else {
+        status = 'Stabil';
+      }
+
+      summaries.add(
+        MonthlySummary(
+          month: _getMonthName(data['month']),
+          year: data['year'],
+          totalNewLoans: totalNewLoans,
+          newLoansCount: newLoans.length,
+          totalPayments: totalPayments,
+          paymentsCount: payments.length,
+          status: status,
+        ),
+      );
+    }
+
+    // Sort by year and month (descending)
+    summaries.sort((a, b) {
+      if (a.year != b.year) {
+        return b.year.compareTo(a.year);
+      }
+      return _getMonthNumber(b.month).compareTo(_getMonthNumber(a.month));
+    });
 
     return summaries;
+  }
+
+  String _getMonthName(int month) {
+    const months = [
+      'JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI',
+      'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'
+    ];
+    return months[month - 1];
+  }
+
+  int _getMonthNumber(String monthName) {
+    const months = [
+      'JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI',
+      'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'
+    ];
+    return months.indexOf(monthName) + 1;
   }
 }

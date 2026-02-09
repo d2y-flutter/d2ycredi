@@ -1,5 +1,5 @@
-import 'package:d2ycredi/features/debt/domain/entities/debt.dart';
 import 'package:sqflite/sqflite.dart';
+
 import '../../../../core/database/app_database.dart';
 import '../models/debt_model.dart';
 
@@ -26,8 +26,7 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
     );
 
     if (result.isEmpty) {
-      await _seedInitialData(db);
-      return getDebts();
+      return [];
     }
 
     return result.map(DebtModel.fromMap).toList();
@@ -62,32 +61,5 @@ class DebtLocalDataSourceImpl implements DebtLocalDataSource {
       where: 'id = ?',
       whereArgs: [id],
     );
-  }
-
-  Future<void> _seedInitialData(Database db) async {
-    final defaultDebts = [
-      DebtModel(
-        id: '1',
-        borrowerName: 'Budi Santoso',
-        borrowerAvatar: 'https://i.pravatar.cc/150?img=1',
-        amount: 1500000,
-        dueDate: DateTime(2023, 10, 25),
-        status: DebtStatus.belum,
-        note: 'Pinjaman untuk modal usaha',
-      ),
-      DebtModel(
-        id: '2',
-        borrowerName: 'Siti Aminah',
-        borrowerAvatar: 'https://i.pravatar.cc/150?img=5',
-        amount: 500000,
-        dueDate: DateTime(2023, 10, 10),
-        status: DebtStatus.lunas,
-        note: 'Sudah lunas',
-      ),
-    ];
-
-    for (final debt in defaultDebts) {
-      await db.insert(_table, debt.toMap());
-    }
   }
 }

@@ -1,4 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:d2ycredi/core/routes/app_routes.dart';
+import 'package:d2ycredi/core/utils/avatar_color_utils.dart';
+import 'package:d2ycredi/core/utils/helpers.dart';
+import 'package:d2ycredi/core/widgets/d2y_modal.dart';
 import 'package:d2ycredi/features/debt/presentation/bloc/debt/debt_bloc.dart';
 import 'package:d2ycredi/features/debt/presentation/bloc/debt/debt_event.dart';
 import 'package:d2ycredi/features/debt/presentation/bloc/debt/debt_state.dart';
@@ -13,7 +18,6 @@ import '../../../../core/config/app_color.dart';
 import '../../../../core/config/app_constants.dart';
 import '../../../../core/config/app_text_styles.dart';
 import '../../../../core/utils/formatters.dart';
-import '../../../../core/widgets/d2y_avatar.dart';
 import '../../../../core/widgets/d2y_loading.dart';
 import '../../../../core/widgets/d2y_no_data.dart';
 import '../../../../core/widgets/d2y_slideable.dart';
@@ -78,6 +82,9 @@ class _DebtListPageState extends State<DebtListPage> {
   }
 
   Widget _buildContent(DebtLoaded state) {
+     final data = state.filteredDebts;
+     print("state.stats.List : $data");
+
     return RefreshIndicator(
       onRefresh: () async {
         context.read<DebtBloc>().add(LoadDebts());
@@ -256,6 +263,11 @@ class _DebtListPageState extends State<DebtListPage> {
     final statusBgColor =
         isLunas ? AppColor.statusLunasLight : AppColor.statusBelumLight;
 
+    final bgColor =
+        AvatarColorUtils.backgroundFromName(debt.borrowerName);
+    final textColor =
+        AvatarColorUtils.textColorFromBackground(bgColor);
+
     return D2YSlideable(
       endActions: [
         D2YSlideAction(
@@ -295,11 +307,16 @@ class _DebtListPageState extends State<DebtListPage> {
               padding: const EdgeInsets.all(AppConstants.paddingLG),
               child: Row(
                 children: [
-                  // Avatar
-                  D2YAvatar(
-                    imageUrl: debt.borrowerAvatar,
-                    name: debt.borrowerName,
-                    size: 56,
+                  CircleAvatar(
+                    radius: 24,
+                    backgroundColor: bgColor,
+                    child: Text(
+                      Helpers.getInitials(debt.borrowerName),
+                      style: TextStyle(
+                        color: textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
 
                   const SizedBox(width: AppConstants.spaceMD),
@@ -384,31 +401,18 @@ class _DebtListPageState extends State<DebtListPage> {
     );
   }
 
-  void _showDeleteConfirmation(Debt debt) {
-    showDialog(
+  Future<void> _showDeleteConfirmation(Debt debt) async {
+    final confirmed = await D2YModal.confirm(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Hapus Utang'),
-        content: Text(
+      title: 'Hapus Utang',
+      message:
           'Apakah Anda yakin ingin menghapus utang dari ${debt.borrowerName}?',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Batal'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              context.read<DebtBloc>().add(DeleteDebt(debt.id));
-            },
-            style: TextButton.styleFrom(
-              foregroundColor: AppColor.error,
-            ),
-            child: const Text('Hapus'),
-          ),
-        ],
-      ),
+      confirmText: 'Hapus',
+      cancelText: 'Batal',
     );
+
+    if (confirmed == true) {
+      context.read<DebtBloc>().add(DeleteDebt(debt.id));
+    }
   }
 }

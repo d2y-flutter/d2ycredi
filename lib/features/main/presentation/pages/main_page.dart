@@ -21,9 +21,7 @@ class _MainPageState extends State<MainPage> {
   int _getCurrentIndex(BuildContext context) {
     final String location = GoRouterState.of(context).uri.path;
     if (location.startsWith(AppRoutes.home)) return 0;
-    if (location.startsWith(AppRoutes.explore)) return 1;
-    if (location.startsWith(AppRoutes.notifications)) return 2;
-    if (location.startsWith(AppRoutes.profile)) return 3;
+    if (location.startsWith(AppRoutes.summary)) return 1;
     return 0;
   }
 
@@ -34,12 +32,6 @@ class _MainPageState extends State<MainPage> {
         break;
       case 1:
         context.go(AppRoutes.summary);
-        break;
-      case 2:
-        context.go(AppRoutes.notifications);
-        break;
-      case 3:
-        context.go(AppRoutes.profile);
         break;
     }
   }
@@ -70,14 +62,14 @@ class _MainPageState extends State<MainPage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _NavBarItem(
-                  icon: Icons.home_outlined,
+                  icon: Iconsax.home_1,
                   activeIcon: Iconsax.home_1,
                   label: 'BERANDA',
                   isActive: _getCurrentIndex(context) == 0,
                   onTap: () => _onItemTapped(0),
                 ),
                 _NavBarItem(
-                  icon: Icons.description_outlined,
+                  icon: Iconsax.note,
                   activeIcon: Iconsax.note,
                   label: 'LAPORAN',
                   isActive: _getCurrentIndex(context) == 1,

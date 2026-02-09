@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:d2ycredi/core/widgets/d2y_modal.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 
@@ -93,50 +94,38 @@ class PermissionService {
 
     if (status.isGranted) return true;
 
+    /// CASE: Denied (masih bisa request)
     if (status.isDenied) {
-      return await showDialog<bool>(
+      final allow = await D2YModal.confirm(
         context: context,
-        builder: (context) => AlertDialog(
-          title: Text(title),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                Navigator.pop(context, true);
-                await requestPermission(permission);
-              },
-              child: const Text('Allow'),
-            ),
-          ],
-        ),
+        title: title,
+        message: message,
+        confirmText: 'Allow',
+        cancelText: 'Cancel',
       );
+
+      if (allow == true) {
+        await requestPermission(permission);
+      }
+
+      return allow;
     }
 
+    /// CASE: Permanently Denied (harus ke Settings)
     if (status.isPermanentlyDenied) {
-      return await showDialog<bool>(
+      final openSettings = await D2YModal.confirm(
         context: context,
-        builder: (context) => AlertDialog(
-          title: Text(title),
-          content: Text('$message\n\nPlease enable it in app settings.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                Navigator.pop(context, true);
-                await openAppSettings();
-              },
-              child: const Text('Settings'),
-            ),
-          ],
-        ),
+        title: title,
+        message: '$message\n\nPlease enable it in app settings.',
+        confirmText: 'Settings',
+        cancelText: 'Cancel',
       );
+
+      if (openSettings == true) {
+        await openAppSettings();
+      }
+
+      return openSettings;
     }
 
     return false;

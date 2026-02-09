@@ -249,5 +249,32 @@ class Helpers {
   static double getBottomPadding(BuildContext context) {
     return MediaQuery.of(context).padding.bottom;
   }
-}
+  
+  static String getInitials(String name) {
+    if (name.trim().isEmpty) return '?';
 
+    final parts = name.trim().split(' ');
+    if (parts.length == 1) {
+      return parts.first.substring(0, 1).toUpperCase();
+    }
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+
+  static const List<String> _months = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+    'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+  ];
+
+  /// Convert month number (1-12) → short name
+  static String monthName(int month) {
+    if (month < 1 || month > 12) return '-';
+    return _months[month - 1];
+  }
+
+  /// Convert month name → index (1-12)
+  /// contoh: "Jan" → 1, "Des" → 12
+  static int monthIndex(String monthName) {
+    final index = _months.indexOf(monthName);
+    return index == -1 ? 0 : index + 1;
+  }
+}

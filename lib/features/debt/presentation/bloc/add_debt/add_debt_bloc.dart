@@ -91,7 +91,7 @@ class AddDebtBloc extends Bloc<AddDebtEvent, AddDebtState> {
   }
 
   String generateAvatarFromName(String name) {
-    final encodedName = Uri.encodeComponent(name.trim());
-    return 'https://ui-avatars.com/api/?name=$encodedName&background=0D8ABC&color=fff';
+    final encodedName = name.trim();
+    return 'https://ui-avatars.com/api/?name=$encodedName&background=random';
   }
 }

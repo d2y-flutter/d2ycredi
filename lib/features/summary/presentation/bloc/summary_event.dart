@@ -17,3 +17,12 @@ class ChangeSelectedYear extends SummaryEvent {
   @override
   List<Object?> get props => [year];
 }
+
+class FilterByYear extends SummaryEvent {
+  final int year;
+
+  const FilterByYear(this.year);
+
+  @override
+  List<Object?> get props => [year];
+}

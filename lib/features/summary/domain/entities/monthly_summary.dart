@@ -7,7 +7,7 @@ class MonthlySummary extends Equatable {
   final int newLoansCount;
   final double totalPayments;
   final int paymentsCount;
-  final String status; // 'Meningkat', 'Stabil', 'Menurun'
+  final String status; // 'Meningkat', 'Stabil', 'Menurun', 'Selesai'
 
   const MonthlySummary({
     required this.month,
@@ -54,4 +54,20 @@ class SummaryStats extends Equatable {
         percentageChange,
         monthlyData,
       ];
+
+  SummaryStats copyWith({
+    double? totalActiveDebt,
+    double? totalPaidDebt,
+    int? totalDebtors,
+    double? percentageChange,
+    List<MonthlySummary>? monthlyData,
+  }) {
+    return SummaryStats(
+      totalActiveDebt: totalActiveDebt ?? this.totalActiveDebt,
+      totalPaidDebt: totalPaidDebt ?? this.totalPaidDebt,
+      totalDebtors: totalDebtors ?? this.totalDebtors,
+      percentageChange: percentageChange ?? this.percentageChange,
+      monthlyData: monthlyData ?? this.monthlyData,
+    );
+  }
 }

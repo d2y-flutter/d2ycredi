@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import '../config/app_color.dart';
 import '../config/app_constants.dart';
 import '../config/app_text_styles.dart';
@@ -21,7 +22,7 @@ class D2YNoData extends StatelessWidget {
     this.message,
     this.imagePath,
     this.icon,
-    this.imageSize = 200.0,
+    this.imageSize = 180.0,
     this.actionLabel,
     this.onAction,
     this.customWidget,
@@ -128,7 +129,7 @@ class D2YNoData extends StatelessWidget {
     VoidCallback? onAction,
   }) {
     return D2YNoData(
-      icon: Icons.inbox_outlined,
+      icon: Iconsax.empty_wallet,
       title: title ?? 'No Data',
       message: message ?? 'There is no data to display',
       actionLabel: actionLabel,

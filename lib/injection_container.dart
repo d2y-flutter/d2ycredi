@@ -117,7 +117,7 @@ Future<void> _registerSummary() async {
 
   // Bloc
   getIt.registerFactory(
-    () => SummaryBloc(getSummaryStatsUseCase: getIt()),
+    () => SummaryBloc(getSummaryStatsUseCase: getIt(),summaryRepository: getIt()),
   );
 }
 

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:d2ycredi/core/widgets/d2y_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -214,28 +215,27 @@ class D2YImagePicker {
     BuildContext context,
     ImageSource source,
   ) async {
-    final permissionName = source == ImageSource.camera ? 'Camera' : 'Gallery';
-    await showDialog(
+    final permissionName =
+        source == ImageSource.camera ? 'Camera' : 'Gallery';
+
+    await D2YModal.showWithActions(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('$permissionName Permission Required'),
-        content: Text(
-          'Please grant $permissionName permission to continue.',
+      title: '$permissionName Permission Required',
+      message: 'Please grant $permissionName permission to continue.',
+      actions: [
+        D2YModalAction(
+          label: 'Cancel',
+          value: false,
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _permissionService.openAppSettings();
-            },
-            child: const Text('Settings'),
-          ),
-        ],
-      ),
+        D2YModalAction(
+          label: 'Settings',
+          value: true,
+          color: AppColor.primary,
+          onPressed: () {
+            _permissionService.openAppSettings();
+          },
+        ),
+      ],
     );
   }
 
