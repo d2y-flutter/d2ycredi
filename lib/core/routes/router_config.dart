@@ -5,6 +5,7 @@ import 'package:d2ycredi/features/debt/presentation/pages/edit_debt_page.dart';
 import 'package:d2ycredi/features/main/presentation/pages/main_page.dart';
 import 'package:d2ycredi/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:d2ycredi/features/reminder/presentation/pages/set_reminder_page.dart';
+import 'package:d2ycredi/features/search/presentation/pages/search_page.dart';
 import 'package:d2ycredi/features/settings/presentation/pages/about_page.dart';
 import 'package:d2ycredi/features/settings/presentation/pages/privacy_policy_page.dart';
 import 'package:d2ycredi/features/settings/presentation/pages/settings_page.dart';
@@ -111,10 +112,10 @@ class RouterConfig {
               ),
             ),
             GoRoute(
-              path: AppRoutes.profile,
-              name: 'profile',
+              path: AppRoutes.search,
+              name: 'search',
               pageBuilder: (context, state) => NoTransitionPage(
-                child: const DebtListPage(),
+                child: const SearchPage(),
               ),
             ),
           ],

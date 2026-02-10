@@ -15,6 +15,12 @@ import 'package:d2ycredi/features/debt/presentation/bloc/detail_debt/detail_debt
 import 'package:d2ycredi/features/debt/presentation/bloc/edit_debt/edit_debt_bloc.dart';
 import 'package:d2ycredi/features/reminder/domain/usecases/update_reminder_usecase.dart';
 import 'package:d2ycredi/features/reminder/presentation/bloc/reminder/reminder_bloc.dart';
+import 'package:d2ycredi/features/search/data/datasources/search_local_datasource.dart';
+import 'package:d2ycredi/features/search/data/repositories/search_repository_impl.dart';
+import 'package:d2ycredi/features/search/domain/repositories/search_repository.dart';
+import 'package:d2ycredi/features/search/domain/usecases/get_search_history_usecase.dart';
+import 'package:d2ycredi/features/search/domain/usecases/search_debts_usecase.dart';
+import 'package:d2ycredi/features/search/presentation/bloc/search_bloc.dart';
 import 'package:d2ycredi/features/settings/data/datasources/settings_local_datasource.dart';
 import 'package:d2ycredi/features/settings/data/repositories/settings_repository_impl.dart';
 import 'package:d2ycredi/features/settings/domain/repositories/settings_repository.dart';
@@ -41,6 +47,7 @@ Future<void> setupDependencyInjection() async {
   await _registerReminder();
   await _registerSummary();
   await _registerSettings();
+  await _registerSearch();
 }
 
 Future<void> _registerServices() async {
@@ -159,6 +166,34 @@ Future<void> _registerSettings() async {
       getSettingsUseCase: getIt(),
       updateSettingsUseCase: getIt(),
       settingsRepository: getIt(),
+    ),
+  );
+}
+
+Future<void> _registerSearch() async {
+  // Data sources
+  getIt.registerLazySingleton<SearchLocalDataSource>(
+    () => SearchLocalDataSourceImpl(
+      debtLocalDataSource: getIt(),
+      storageService: getIt(),
+    ),
+  );
+
+  // Repositories
+  getIt.registerLazySingleton<SearchRepository>(
+    () => SearchRepositoryImpl(localDataSource: getIt()),
+  );
+
+  // Use cases
+  getIt.registerLazySingleton(() => SearchDebtsUseCase(getIt()));
+  getIt.registerLazySingleton(() => GetSearchHistoryUseCase(getIt()));
+
+  // Bloc
+  getIt.registerFactory(
+    () => SearchBloc(
+      searchDebtsUseCase: getIt(),
+      getSearchHistoryUseCase: getIt(),
+      searchRepository: getIt(),
     ),
   );
 }

@@ -155,27 +155,50 @@ extension DateTimeExtension on DateTime {
   }
 
   // Time ago string
-  String get timeAgo {
+  // String get timeAgo {
+  //   final now = DateTime.now();
+  //   final difference = now.difference(this);
+
+  //   if (difference.inSeconds < 60) {
+  //     return 'just now';
+  //   } else if (difference.inMinutes < 60) {
+  //     return '${difference.inMinutes}m ago';
+  //   } else if (difference.inHours < 24) {
+  //     return '${difference.inHours}h ago';
+  //   } else if (difference.inDays < 7) {
+  //     return '${difference.inDays}d ago';
+  //   } else if (difference.inDays < 30) {
+  //     final weeks = (difference.inDays / 7).floor();
+  //     return '${weeks}w ago';
+  //   } else if (difference.inDays < 365) {
+  //     final months = (difference.inDays / 30).floor();
+  //     return '${months}mo ago';
+  //   } else {
+  //     final years = (difference.inDays / 365).floor();
+  //     return '${years}y ago';
+  //   }
+  // }
+  String timeAgo() {
     final now = DateTime.now();
     final difference = now.difference(this);
 
     if (difference.inSeconds < 60) {
-      return 'just now';
+      return 'Baru saja';
     } else if (difference.inMinutes < 60) {
-      return '${difference.inMinutes}m ago';
+      return '${difference.inMinutes} menit yang lalu';
     } else if (difference.inHours < 24) {
-      return '${difference.inHours}h ago';
+      return '${difference.inHours} jam yang lalu';
     } else if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
+      return '${difference.inDays} hari yang lalu';
     } else if (difference.inDays < 30) {
       final weeks = (difference.inDays / 7).floor();
-      return '${weeks}w ago';
+      return '$weeks minggu yang lalu';
     } else if (difference.inDays < 365) {
       final months = (difference.inDays / 30).floor();
-      return '${months}mo ago';
+      return '$months bulan yang lalu';
     } else {
       final years = (difference.inDays / 365).floor();
-      return '${years}y ago';
+      return '$years tahun yang lalu';
     }
   }
 }

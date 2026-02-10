@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
@@ -21,7 +22,8 @@ class _MainPageState extends State<MainPage> {
   int _getCurrentIndex(BuildContext context) {
     final String location = GoRouterState.of(context).uri.path;
     if (location.startsWith(AppRoutes.home)) return 0;
-    if (location.startsWith(AppRoutes.summary)) return 1;
+    if (location.startsWith(AppRoutes.search)) return 1;
+    if (location.startsWith(AppRoutes.summary)) return 2;
     return 0;
   }
 
@@ -31,6 +33,9 @@ class _MainPageState extends State<MainPage> {
         context.go(AppRoutes.home);
         break;
       case 1:
+        context.go(AppRoutes.search);
+        break;
+      case 2:
         context.go(AppRoutes.summary);
         break;
     }
@@ -69,19 +74,19 @@ class _MainPageState extends State<MainPage> {
                   onTap: () => _onItemTapped(0),
                 ),
                 _NavBarItem(
-                  icon: Iconsax.note,
-                  activeIcon: Iconsax.note,
-                  label: 'LAPORAN',
+                  icon: CupertinoIcons.search,
+                  activeIcon: CupertinoIcons.search,
+                  label: 'SEARCH',
                   isActive: _getCurrentIndex(context) == 1,
                   onTap: () => _onItemTapped(1),
                 ),
-                // _NavBarItem(
-                //   icon: Icons.contacts_outlined,
-                //   activeIcon: Icons.contacts,
-                //   label: 'KONTAK',
-                //   isActive: _getCurrentIndex(context) == 2,
-                //   onTap: () => _onItemTapped(2),
-                // ),
+                _NavBarItem(
+                  icon: Iconsax.note,
+                  activeIcon: Iconsax.note,
+                  label: 'LAPORAN',
+                  isActive: _getCurrentIndex(context) == 2,
+                  onTap: () => _onItemTapped(2),
+                ),
               ],
             ),
           ),

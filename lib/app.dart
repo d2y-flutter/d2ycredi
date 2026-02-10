@@ -5,6 +5,7 @@ import 'package:d2ycredi/features/debt/presentation/bloc/debt/debt_bloc.dart';
 import 'package:d2ycredi/features/debt/presentation/bloc/detail_debt/detail_debt_bloc.dart';
 import 'package:d2ycredi/features/debt/presentation/bloc/edit_debt/edit_debt_bloc.dart';
 import 'package:d2ycredi/features/reminder/presentation/bloc/reminder/reminder_bloc.dart';
+import 'package:d2ycredi/features/search/presentation/bloc/search_bloc.dart';
 import 'package:d2ycredi/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:d2ycredi/features/settings/presentation/bloc/settings_event.dart';
 import 'package:d2ycredi/features/settings/presentation/bloc/settings_state.dart';
@@ -50,6 +51,7 @@ class _MyAppState extends State<MyApp> {
 
         BlocProvider(create: (_) => getIt<ReminderBloc>()),
         BlocProvider(create: (_) => getIt<SummaryBloc>()),
+        BlocProvider(create: (_) => getIt<SearchBloc>()),
       ],
       child: BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, state) {
