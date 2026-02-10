@@ -113,10 +113,10 @@ class _SplashPageState extends State<SplashPage>
                         ],
                       ),
                       child: Center(
-                        child: Icon(
-                          Icons.wallet,
-                          size: 80,
+                        child: Image.asset(
+                          "assets/images/d2ycredi.png",
                           color: AppColor.primary,
+                          width: 100,
                         ),
                       ),
                     ),

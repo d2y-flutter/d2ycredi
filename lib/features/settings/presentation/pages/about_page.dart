@@ -47,9 +47,9 @@ class AboutPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const Icon(
-                  Icons.account_balance_wallet,
-                  size: 60,
+                child: Image.asset(
+                  "assets/images/d2ycredi.png",
+                  width: 40,
                   color: AppColor.white,
                 ),
               ),
